@@ -3,11 +3,12 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@as-integrations/express5';
 import cors from 'cors';
 import {prismaClient} from './lib/db.js'
+import { addUsers } from './api/users/addUsers.js';
 
 async function init() {
-    const app = express()
+    const app = express();
 
-    const PORT = 8000
+    const PORT = 8000;
 
     app.use(express.json());
     app.use(cors());
@@ -50,7 +51,9 @@ async function init() {
 
     app.get('/', (req, res) => {
         res.json({ message: "server is running" });
-    }) 
+    })
+
+    app.post('/api/users/add-user', addUsers);
 
     app.use('/graphql',expressMiddleware(gqlServer));
 
